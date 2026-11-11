@@ -9,7 +9,7 @@ from spomenica_pipeline.config import REPO_ROOT, PipelineConfig
 def test_defaults_point_into_repo() -> None:
     config = PipelineConfig()
 
-    assert config.source_image == REPO_ROOT / "source" / "placeholder.jpeg"
+    assert config.source_image == REPO_ROOT / "source" / "better-scanned-version.jpeg"
     assert config.master_path.parent == config.output_dir
 
 

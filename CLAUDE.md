@@ -1,7 +1,7 @@
 # Albanska spomenica — interactive deep-zoom presentation
 
 ## Goal
-Bring my great-grandfather's Albanska spomenica certificate (paper document, 1921) to life as a
+Bring my great-great-grandfather's (чукундеда) Albanska spomenica certificate (paper document, 1921) to life as a
 small website: a very high-resolution image you can zoom and pan, with interactive pins that
 explain each part of the document. Must work well on phones and desktop.
 
@@ -56,8 +56,9 @@ Accessibility and polish:
 - Test on a real phone, run Lighthouse.
 
 ## Draft transcription (to verify against the real scan)
-Uncertain readings are marked [?]. The handwritten name and unit are NOT yet read; leave a
-placeholder for me to fill in.
+Uncertain readings are marked [?]. The handwritten recipient (red ink) is Krsto Đ. Stojanović
+from Tometino Polje (Крсто Ђ. Стојановић из Тометиног Поља); the exact inflected form as
+written still needs checking on the scan.
 
 > Његово Величанство
 > Александар I.
@@ -67,7 +68,7 @@ placeholder for me to fill in.
 > Благоволео је указом Својим од 6. Новембра 1921 год. ФА № 2321 [?], на предлог
 > Министра Војног и Морнарице, а на основу Указа од 3. Априла 1920 год. ФА № 15153 [?],
 > за верности Отаџбини 1915 год. одликовати Свога ратног друга:
-> [handwritten in red ink: rank, name, unit — TO BE FILLED IN]
+> [handwritten in red ink:] Крста Ђ. Стојановића [?] из Тометина Поља [?]
 >
 > Албанском Споменицом,
 > што му овим потврђује.
@@ -82,7 +83,7 @@ placeholder for me to fill in.
 1. Medal with ribbon (top center): the Albanska spomenica itself
 2. Heading: King Alexander I, Kingdom of Serbs, Croats and Slovenes
 3. Decree text: decree dates and numbers, "loyalty to the fatherland 1915"
-4. Handwritten recipient: my great-grandfather (personal story to be added by me)
+4. Handwritten recipient: Krsto Đ. Stojanović, my great-great-grandfather (personal story to be added by me)
 5. "Албанском Споменицом": what the medal commemorates (retreat through Albania 1915/16)
 6. Record number and date/place of issue
 7. Signatures of the Chancellery of Royal Orders

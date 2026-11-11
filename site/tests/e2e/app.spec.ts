@@ -60,7 +60,7 @@ test('transcription lines zoom to their place', async ({ page }) => {
 
   await expect(line).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('.region--line')).toHaveClass(/is-visible/);
-  await expect(page.locator('.line--placeholder')).toHaveCount(2);
+  await expect(page.locator('[data-line="odlikovani-1"]')).toContainText('Стојановић');
 });
 
 test('script toggle switches to Latin and is remembered', async ({ page }) => {

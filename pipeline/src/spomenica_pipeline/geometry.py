@@ -22,6 +22,8 @@ _VIPS_ANGLES = {0: "d0", 90: "d90", 180: "d180", 270: "d270"}
 _MAX_DOCUMENT_AREA = 0.98
 _POLY_EPSILON = 0.02
 _MIN_QUAD_FILL = 0.9
+_MIN_BACKGROUND_CONTRAST = 0.12
+"""Minimum median-brightness difference (0-1) between the paper and what lies outside it."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -108,7 +110,9 @@ def detect_document_quad(image: FloatImage, min_area: float) -> Quad | None:
     """Find the four corners of the document in a proxy image.
 
     Thresholds the image in both polarities (paper brighter or darker than its
-    background) and keeps the largest contour that simplifies to a convex quadrilateral.
+    background) and keeps the largest contour that simplifies to a convex quadrilateral
+    *and* is surrounded by something that clearly is not paper. The last check rejects
+    rectangular borders printed on the paper itself when the paper fills the photo.
 
     Args:
         image: RGB proxy, float 0-1.
@@ -145,10 +149,36 @@ def detect_document_quad(image: FloatImage, min_area: float) -> Quad | None:
             if contour_area / cv2.contourArea(approx) < _MIN_QUAD_FILL:
                 continue
 
+            if not _has_background_contrast(
+                np.asarray(gray, dtype=np.uint8), np.asarray(approx, dtype=np.int32)
+            ):
+                continue
+
             best = order_corners(approx)
             best_area = contour_area
 
     return best
+
+
+def _has_background_contrast(gray: npt.NDArray[np.uint8], polygon: npt.NDArray[np.int32]) -> bool:
+    """Whether the area just outside a candidate edge looks different from the area inside.
+
+    Compares narrow bands on either side of the outline, so a vignette or the paper's own
+    content far from the edge does not influence the result.
+    """
+    band = max(3, round(max(gray.shape) / 60))
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (band, band))
+    region = np.zeros(gray.shape, dtype=np.uint8)
+    cv2.fillPoly(region, [polygon.reshape(-1, 2)], 255)
+    outside = cv2.dilate(region, kernel) > region
+    inside = region > cv2.erode(region, kernel)
+
+    if not outside.any() or not inside.any():
+        return False
+
+    difference = abs(float(np.median(gray[outside])) - float(np.median(gray[inside])))
+
+    return difference / 255 >= _MIN_BACKGROUND_CONTRAST
 
 
 def output_size(quad: Quad) -> Size:

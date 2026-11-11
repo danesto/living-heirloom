@@ -85,6 +85,13 @@ def test_no_detection_when_paper_fills_frame(document: np.ndarray) -> None:
     assert geometry.detect_document_quad(document, min_area=0.2) is None
 
 
+def test_ignores_borders_printed_on_paper_that_fills_the_frame(document: np.ndarray) -> None:
+    framed = document.copy()
+    cv2.rectangle(framed, (30, 40), (210, 280), (0.15, 0.12, 0.25), 6)  # printed frame
+
+    assert geometry.detect_document_quad(framed, min_area=0.2) is None
+
+
 def test_vips_warp_matches_numpy_warp() -> None:
     photo, corners = _photo_of_document()
     quad = geometry.order_corners(corners)

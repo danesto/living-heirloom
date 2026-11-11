@@ -47,11 +47,11 @@ class PipelineConfig:
             ``"jpg"`` (maximum compatibility).
     """
 
-    source_image: Path = REPO_ROOT / "source" / "placeholder.jpeg"
+    source_image: Path = REPO_ROOT / "source" / "better-scanned-version.jpeg"
     output_dir: Path = REPO_ROOT / "pipeline" / "output"
     tiles_dir: Path = REPO_ROOT / "site" / "public" / "tiles"
     tiles_name: str = "spomenica"
-    rotate_degrees: int = 90
+    rotate_degrees: int = 0
     corners: Corners | None = None
     min_document_area: float = 0.2
     analysis_max_side: int = 1600
