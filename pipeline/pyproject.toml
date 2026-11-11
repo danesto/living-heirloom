@@ -1,0 +1,76 @@
+[project]
+name = "spomenica-pipeline"
+version = "0.1.0"
+description = "Image pipeline for the Albanska spomenica deep-zoom presentation."
+requires-python = ">=3.12"
+dependencies = [
+    "numpy==2.5.4",
+    "opencv-python-headless==5.0.0.93",
+    "pyvips[binary]==3.2.0",
+]
+
+[project.scripts]
+spomenica-pipeline = "spomenica_pipeline.cli:main"
+
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/spomenica_pipeline"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+  "E", "W",   # pycodestyle
+  "F",        # pyflakes
+  "I",        # isort
+  "B",        # bugbear
+  "UP",       # pyupgrade
+  "N",        # pep8-naming
+  "D",        # pydocstyle
+  "ANN",      # annotations
+  "C4",       # comprehensions
+  "SIM",      # simplify
+  "RET",      # return
+  "PTH",      # use pathlib
+  "PL",       # pylint
+  "RUF",      # ruff-specific
+  "PT",       # pytest style
+  "NPY",      # numpy
+  "S",        # bandit
+  "ERA",      # commented-out code
+]
+ignore = [
+  "PLR2004",  # magic values are fine in image-processing math
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S314", "D", "PLR2004"]  # S314: tests parse files they just wrote
+"typings/**" = ["D", "N", "PYI"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+strict = true
+mypy_path = "typings"
+python_version = "3.12"
+files = ["src", "tests"]
+warn_unreachable = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+
+[dependency-groups]
+dev = [
+    "mypy==2.4.1",
+    "pre-commit==4.7.0",
+    "pytest==9.2.0",
+    "ruff==0.17.4",
+]

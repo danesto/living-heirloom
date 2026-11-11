@@ -1,0 +1,6 @@
+dist/
+coverage/
+public/tiles/
+pnpm-lock.yaml
+test-results/
+playwright-report/

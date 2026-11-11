@@ -1,0 +1,39 @@
+# Install once with: uv run --directory pipeline pre-commit install
+# All hooks are local so they use the exact tool versions pinned in the lockfiles.
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: ruff format
+        entry: uv run --project pipeline ruff format --force-exclude
+        language: system
+        types: [python]
+      - id: ruff-check
+        name: ruff check
+        entry: uv run --project pipeline ruff check --fix --force-exclude
+        language: system
+        types: [python]
+      - id: mypy
+        name: mypy (strict)
+        entry: uv run --directory pipeline mypy
+        language: system
+        types: [python]
+        pass_filenames: false
+      - id: prettier
+        name: prettier
+        entry: bash -c 'cd site && pnpm exec prettier --write --ignore-unknown "${@#site/}"' --
+        language: system
+        files: ^site/
+        exclude: ^site/(public/tiles/|pnpm-lock\.yaml)
+        types: [text]
+      - id: eslint
+        name: eslint
+        entry: bash -c 'cd site && pnpm exec eslint --fix --max-warnings 0 "${@#site/}"' --
+        language: system
+        files: ^site/.*\.(ts|js)$
+      - id: tsc
+        name: tsc -b
+        entry: bash -c 'cd site && pnpm exec tsc -b'
+        language: system
+        files: ^site/.*\.ts$
+        pass_filenames: false
